@@ -3,6 +3,7 @@ from flask import Flask, request, Response
 
 backend = Flask(__name__)
 
+
 @backend.route("/feather/genPlist/", methods=["GET"])
 def generate_plist():
     bundleid = request.args.get("bundleid", "")
@@ -51,6 +52,7 @@ def generate_plist():
     )
 
     return Response(plist_content, mimetype="application/xml")
+
 
 if __name__ == "__main__":
     backend.run(host="0.0.0.0", port=1234)
