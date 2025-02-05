@@ -40,11 +40,9 @@ service() {
     local service_file="/etc/systemd/system/${service_name}.service"
     local current_user
     local script_directory
-    local project_root
 
     current_user=$(whoami)
     script_directory="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    project_root="$(cd "$script_directory/.." && pwd)"
 
     if [ -f "$service_file" ]; then
         print_warning "Existing service file found. Replacing..."
@@ -59,7 +57,7 @@ After=network.target
 [Service]
 User=${current_user}
 ExecStart=${script_directory}/gunicorn --workers 1 --bind 127.0.0.1:1234 endpoint:backend
-WorkingDirectory=${project_root}
+WorkingDirectory=${script_directory}
 Restart=always
 RestartSec=5
 TasksMax=10000
