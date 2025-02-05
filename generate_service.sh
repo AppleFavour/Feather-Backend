@@ -36,7 +36,7 @@ pip() {
 }
 
 service() {
-    local service_name="Feather Endpoint"
+    local service_name="Feather_API"
     local service_file="/etc/systemd/system/${service_name}.service"
     local current_user
     local script_directory
