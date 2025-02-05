@@ -58,7 +58,7 @@ After=network.target
 
 [Service]
 User=${current_user}
-ExecStart=${script_directory}/gunicorn --workers 1 --bind 127.0.0.1:1234 endpoint:backend
+ExecStart=gunicorn --workers 1 --bind 127.0.0.1:1234 endpoint:backend
 WorkingDirectory=${project_root}
 Restart=always
 RestartSec=5
