@@ -10,12 +10,6 @@ def generate_plist():
         name = req.args["name"]
         version = req.args["version"]
         fetchurl = req.args["fetchurl"]
-        """
-        bundleid = req.args.get("bundleid", "")
-        name = req.args.get("name", "")
-        version = req.args.get("version", "")
-        fetchurl = req.args.get("fetchurl", "")
-        """
 
         install_plist_temp = """
         <?xml version="1.0" encoding="UTF-8"?>
