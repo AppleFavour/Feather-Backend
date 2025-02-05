@@ -1,56 +1,61 @@
-import os
-from flask import Flask, request, Response
+from flask import Flask as F, request as req, Response as res
 
-backend = Flask(__name__)
+backend = F(__name__)
 
 
 @backend.route("/feather/genPlist/", methods=["GET"])
 def generate_plist():
-    bundleid = request.args.get("bundleid", "")
-    name = request.args.get("name", "")
-    version = request.args.get("version", "")
-    fetchurl = request.args.get("fetchurl", "")
+    try:
+        bundleid = req.args.get("bundleid", "")
+        name = req.args.get("name", "")
+        version = req.args.get("version", "")
+        fetchurl = req.args.get("fetchurl", "")
 
-    plist_template = """<?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    <plist version="1.0">
-        <dict>
-            <key>items</key>
-            <array>
-                <dict>
-                    <key>assets</key>
-                    <array>
-                        <dict>
-                            <key>kind</key>
-                            <string>software-package</string>
-                            <key>url</key>
-                            <string>fetchurl</string>
-                        </dict>
-                    </array>
-                    <key>metadata</key>
+        install_plist_temp = """
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+            <dict>
+                <key>items</key>
+                <array>
                     <dict>
-                        <key>bundle-identifier</key>
-                        <string>bundleid</string>
-                        <key>bundle-version</key>
-                        <string>version</string>
-                        <key>kind</key>
-                        <string>software</string>
-                        <key>title</key>
-                        <string>name</string>
+                        <key>assets</key>
+                        <array>
+                            <dict>
+                                <key>kind</key>
+                                <string>software-package</string>
+                                <key>url</key>
+                                <string>fetchurl</string>
+                            </dict>
+                        </array>
+                        <key>metadata</key>
+                        <dict>
+                            <key>bundle-identifier</key>
+                            <string>bundleid</string>
+                            <key>bundle-version</key>
+                            <string>version</string>
+                            <key>kind</key>
+                            <string>software</string>
+                            <key>title</key>
+                            <string>name</string>
+                        </dict>
                     </dict>
-                </dict>
-            </array>
-        </dict>
-    </plist>"""
+                </array>
+            </dict>
+        </plist>
+        """
 
-    plist_content = (
-        plist_template.replace("fetchurl", fetchurl)
-        .replace("bundleid", bundleid)
-        .replace("version", version)
-        .replace("name", name)
-    )
+        install_plist = (
+            install_plist_temp.replace("fetchurl", fetchurl)
+            .replace("bundleid", bundleid)
+            .replace("version", version)
+            .replace("name", name)
+        )
 
-    return Response(plist_content, mimetype="application/xml")
+        return res(install_plist, mimetype="application/xml", status=200)
+
+    except Exception as error:
+        return res(str(error), mimetype="text/plain", status=500)
 
 
 if __name__ == "__main__":
