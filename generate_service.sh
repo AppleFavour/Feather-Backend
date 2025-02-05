@@ -36,7 +36,7 @@ pip() {
 }
 
 service() {
-    local service_name="Feather_API_Backend"
+    local service_name="Feather Endpoint"
     local service_file="/etc/systemd/system/${service_name}.service"
     local current_user
     local script_directory
@@ -58,7 +58,7 @@ After=network.target
 
 [Service]
 User=${current_user}
-ExecStart=gunicorn --workers 1 --bind 127.0.0.1:1234 endpoint:backend
+ExecStart=${script_directory}/gunicorn --workers 1 --bind 127.0.0.1:1234 endpoint:backend
 WorkingDirectory=${project_root}
 Restart=always
 RestartSec=5
@@ -70,7 +70,6 @@ EOF
 
     print_warning "Starting the service..."
     if sudo systemctl daemon-reload && sudo systemctl enable "${service_name}.service" && sudo systemctl start "${service_name}.service" | tee -a "$LOG_FILE" 2>&1; then
-        sleep 10
         if sudo systemctl is-active --quiet "${service_name}.service"; then
             print_success "Service is active."
         else
