@@ -1,6 +1,6 @@
-from flask import Flask as F, request as req, Response as res
+from flask import Flask as fl, request as req, Response as res
 
-backend = F(__name__)
+backend = fl(__name__)
 
 
 @backend.route("/feather/genPlist/", methods=["GET"])
