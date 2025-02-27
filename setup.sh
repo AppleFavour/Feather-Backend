@@ -12,7 +12,7 @@ pip() {
     local project_root
     local requirements_path
     script_directory="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    project_root="$(cd "$script_directory/.." && pwd)"
+    project_root="$(cd "$script_directory/" && pwd)"
     requirements_path="$project_root/requirements.txt"
 
     print_warning "Checking pip packages..."
